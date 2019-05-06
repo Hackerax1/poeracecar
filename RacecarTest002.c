@@ -10,31 +10,27 @@ task forward1(){
 	startMotor(leftMotor, 60);
 	startMotor(rightMotor, 60);}
 
-task servoline (){
-	setServo(lightServo, -35);
-  wait(0.5);
-	setServo(lightServo, -110);
-	wait(0.5);
-	setServo(lightServo, -35);
-	wait(0.5);
-	setServo(lightServo, 75);
-	wait(0.5);}
-
 task main()
 {
-  	setServo(lightServo, -35);
-  	untilBump(startBump, 50);
-  	startTask(forward1);
-  	untilDark(2950, lineFollower1);
-    stopMotor(leftMotor);
-    stopMotor(rightMotor);
-  	startTask(servoline);
-  	untilLight(2750, lineFollower1);
-  	stopMotor(lightServo);
-  	getMotorEncoder(lightServo);
-    radiansToDegrees(nMotorEncoder[lightServo]);
-    if
-  	untilSonarLessThan(15, sonarInput1);
-
-  	wait(20);
-  	stop();}
+	if(SensorValue[dgtl1] == 1){
+  	while(1 == 1){
+  		setServo(port9, 0);
+  		startTask(forward1);}}
+  else{
+  	stop();
+  	if(SensorValue[dgtl9] <= 10){
+  		while(SensorValue[dgtl9] <= 10){
+  			setServo(port9, -10);
+  			setServo(port9, 10);
+  				if(nMotorEncoder[port9] < 0){
+  					setServo(port9, 0);
+  					pointTurn(left, 127);
+  					untilLight(10, in1);
+  					stop();
+  					startTask(forward1);}
+  				else{
+  		  		setServo(port9, 0);
+  					pointTurn(right, 127);
+  					untilLight(10, in1);
+  					stop();
+  					startTask(forward1);}}}}}
